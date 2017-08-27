@@ -19,6 +19,11 @@ case class JsSuccess[A](a:A) extends JsResult[A]
 
 case class JsError(e:Throwable) extends JsResult[Nothing]
 
+object JsResult {
+
+   def pure[A](a:A): JsResult[A] = JsSuccess(a)
+}
+
 
 trait JsonReader[A] {
 
