@@ -2,11 +2,12 @@ package com.marcom.circe
 
 import shapeless.{Generic,::,HNil, HList}
 
+import JsResult.pure
+
 sealed trait JsResult[+A]{
 
-    def map[B](f:A => B):JsResult[B] = this match {
-      case JsError(e) => JsError(e)
-      case JsSuccess(a) => JsSuccess(f(a))
+    def map[B](f:A => B):JsResult[B] = flatMap{ a =>
+        pure(f(a))
     }
 
   def flatMap[B](f:A => JsResult[B]): JsResult[B] = this match {
