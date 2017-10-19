@@ -9,21 +9,19 @@ import shapeless.{::, HNil, HList}
   */
 class CsvDecoderTest extends org.scalatest.WordSpec with Matchers {
 
-  "a decoder" should {
-    "do it" in {
+  "a csvdecoder" should {
+    "decode a person from valid input" in {
        val dec = CsvDecoder[Person]
-       val (joe,count) = dec.decode(List("joe","soap","10"))
-       joe should be(Person("joe","soap",10))
+       val result = dec.decode(List("joe","soap","10"))
+       result.getOrElse(Person("none","none",0) should be(Person("joe","soap",10)))
     }
-    "do it again" in {
-      val dec = CsvDecoder[String::String::HNil]
-      val (l,i) = dec.decode(List("joe","soap"))
-      (l,i) should be(("joe"::"soap"::HNil,2))
+    "decode a person from valid input again" in {
+      val result = Csv.decode[Person](List("joe","soap","10"))
+      result.getOrElse(Person("none","none",0) should be(Person("joe","soap",10)))
     }
-    "do it for a circle" in {
-      val dec = CsvDecoder[MyCircle]
-      val (joe,count) = dec.decode(List("10","5","5"))
-      joe should be(MyCircle(10,MyPoint(5,5)))
+    "report an error from invalid input" in {
+      val result = Csv.decode[Person](List("joe","soap","ten"))
+      (result.left.getOrElse(Person("none","none",0))) should be(Person("joe","soap",10))
     }
   }
 }
