@@ -17,10 +17,6 @@ object FlattenInterface {
   import ConversionSyntax._
   import Conversion._
 
-  def flattenTo[A<:Product,B<:Product](a:A):B = {
-      val f = flatten(a)
-  }
-
 }
 
 trait Conversion[A,B]{
